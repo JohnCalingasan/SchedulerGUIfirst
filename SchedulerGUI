@@ -1,0 +1,63 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SchedulerGUI extends JFrame {
+    private JTextField taskTextField;
+    private DefaultListModel<String> taskListModel;
+    private JList<String> taskList;
+
+    public SchedulerGUI() {
+        super("Scheduler");
+
+        // Set up the main frame
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(300, 200));
+        setLayout(new BorderLayout());
+
+        // Create the task list model
+        taskListModel = new DefaultListModel<>();
+
+        // Create the task list
+        taskList = new JList<>(taskListModel);
+        add(new JScrollPane(taskList), BorderLayout.CENTER);
+
+        // Create the panel for adding new tasks
+        JPanel inputPanel = new JPanel(new BorderLayout());
+
+        // Create the text field for entering tasks
+        taskTextField = new JTextField();
+        inputPanel.add(taskTextField, BorderLayout.CENTER);
+
+        // Create the button for adding tasks
+        JButton addButton = new JButton("Add Task");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String task = taskTextField.getText().trim();
+                if (!task.isEmpty()) {
+                    taskListModel.addElement(task);
+                    taskTextField.setText("");
+                }
+            }
+        });
+        inputPanel.add(addButton, BorderLayout.EAST);
+
+        add(inputPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(null);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new SchedulerGUI().setVisible(true);
+            }
+        });
+    }
+}
